@@ -11,12 +11,26 @@ import org.kde.plasma.extras as PlasmaExtras
 PlasmoidItem {
     id: root
 
+    property var checkedcount: 0
     readonly property string config_background_color: Plasmoid.configuration.background_color
     readonly property string config_text_color: Plasmoid.configuration.text_color
     readonly property string config_text_font: Plasmoid.configuration.text_font
     readonly property int config_transparency: Plasmoid.configuration.transparency
+    property var count: 0
     property var subModelTitle
 
+    function getCheckedItemCount(listModel) {
+        var count = 0;
+        for (var i = 0; i < listModel.count; i++) {
+            if (listModel.get(i).checked) {
+                count++;
+            }
+        }
+        root.checkedcount = count;
+    }
+    function getModelCount(listModel) {
+        root.count = listModel.count;
+    }
     function loadModelFromJson(fileName, listModel) {
         let file = LocalStorage.openDatabaseSync("qtodo", "1.0", "StorageDatabase", 5000000);
         let jsonString = "";
@@ -33,6 +47,8 @@ PlasmoidItem {
             for (let i = 0; i < jsonArray.length; i++) {
                 listModel.append(jsonArray[i]);
             }
+            getModelCount(listModel);
+            getCheckedItemCount(listModel);
             // move the checked items to the end of the list
             listModel.sort(function (a, b) {
                 return a.checked - b.checked;
@@ -45,6 +61,8 @@ PlasmoidItem {
         for (let i = 0; i < listModel.count; i++) {
             jsonArray.push(listModel.get(i));
         }
+        getModelCount(listModel);
+        getCheckedItemCount(listModel);
         let jsonString = JSON.stringify(jsonArray);
         let file = LocalStorage.openDatabaseSync("qtodo", "1.0", "StorageDatabase", 5000000);
         file.transaction(function (tx) {
@@ -58,8 +76,10 @@ PlasmoidItem {
 
         Accessible.name: Plasmoid.title
         Accessible.role: Accessible.Button
-        Layout.minimumHeight: Kirigami.Units.gridUnit * 3
-        Layout.minimumWidth: Kirigami.Units.gridUnit * 3
+        Layout.minimumHeight: 36
+        Layout.minimumWidth: 80
+        height: 36
+        width: 80
 
         onClicked: root.expanded = !wasExpanded
         onPressed: wasExpanded = root.expanded
@@ -67,7 +87,10 @@ PlasmoidItem {
         PlasmaComponents.Label {
             anchors.fill: parent
             horizontalAlignment: Text.AlignHCenter
-            text: i18n("Click me")
+            font: config_text_font
+            color: config_text_color
+            // Guard access to todoListModel (it may not exist yet when compactRepresentation is evaluated)
+            text: ("%1/%2\n%3").arg(root.checkedcount).arg(root.count).arg(root.checkedcount == root.count ? "＼(≧▽≦)／" : "tasks")
             verticalAlignment: Text.AlignVCenter
             wrapMode: Text.Wrap
         }
@@ -176,6 +199,10 @@ PlasmoidItem {
                     anchors.top: topBarRectangle.bottom
                     anchors.topMargin: 10
                     thisModel: currentModel
+                    // supply config values so InputItem doesn't rely on outer scope ids
+                    width: parent.width * 0.9
+                    // pass config colors/fonts if InputItem uses them
+                    // InputItem will access config_text_color and config_text_font from the root Plasmoid via properties if needed
                 }
                 TodoList {
                     id: mainTodoList

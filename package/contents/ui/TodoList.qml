@@ -12,7 +12,7 @@ ListView {
 
     //readonly property int transparency: Plasmoid.configuration.transparency
     function getCheckedItemCount(model) {
-        var count = 0;
+        var count = 0
         for (var i = 0; i < model.count; i++) {
             if (model.get(i).checked) {
                 count++;
@@ -229,31 +229,32 @@ ListView {
 
             Popup {
                 id: editPopup
-
+                x: (parent.width - width) / 2
+                y: (parent.height - height) / 2
                 closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside | Popup.CloseOnEnter
                 focus: true
                 height: editTextArea.contentHeight + 35
                 modal: true
-                width: root.width + 10
+                width: fullRep.width
 
                 TextArea {
                     id: editTextArea
 
                     anchors.fill: parent
-                    color: "white"
+                    color: config_text_color
                     font: config_text_font
                     horizontalAlignment: TextArea.AlignHCenter
                     text: model.text
                     verticalAlignment: TextArea.AlignVCenter
                     wrapMode: TextArea.Wrap
 
-                    background: Rectangle {
-                        anchors.fill: parent
-                        color: "green"
-                        height: parent.height + 30
-                        opacity: 0.3
-                        radius: 10
-                    }
+                    // background: Rectangle {
+                    //     anchors.fill: parent
+                    //     color: config_background_color
+                    //     height: parent.height + 30
+                    //     opacity: (1 - config_transparency / 100)
+                    //     radius: 10
+                    // }
 
                     Keys.onReturnPressed: {
                         model.text = editTextArea.text;

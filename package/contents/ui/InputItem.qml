@@ -16,7 +16,7 @@ Item {
         color: config_text_color
         horizontalAlignment: TextArea.AlignHCenter
         verticalAlignment: TextArea.AlignVCenter
-        wrapMode: TextArea.Wrap+
+        wrapMode: TextArea.Wrap
         font: config_text_font
         background: Rectangle {
             anchors.fill: parent
