@@ -13,3 +13,12 @@ forked from [fightingff](https://github.com/fightingff/qtodo)
 ## Images:
 
 ![screenshot1](image/README/1.png)
+
+## Installation:
+
+```bash
+git clone https://github.com/cmachsocket/qtodo.git
+cd qtodo
+make install # use 'make clean' to uninstall
+```
+or you can copy the folder to `~/.local/share/plasma/plasmoids/` manually.
