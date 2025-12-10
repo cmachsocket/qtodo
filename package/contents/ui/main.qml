@@ -15,15 +15,6 @@ PlasmoidItem {
     readonly property string config_text_color: Plasmoid.configuration.text_color
     readonly property string config_text_font: Plasmoid.configuration.text_font
     readonly property int config_transparency: Plasmoid.configuration.transparency
-    property var currentModel: null
-    property var mainModel: null
-    property bool subModel: !(mainModel == currentModel)
-    property var subModelTitle
-
-    Component.onCompleted: {
-        mainModel = todoListModel
-        currentModel = todoListModel
-    }
 
     function loadModelFromJson(fileName, listModel) {
         let file = LocalStorage.openDatabaseSync("qtodo", "1.0", "StorageDatabase", 5000000);
@@ -81,119 +72,127 @@ PlasmoidItem {
         }
     }
     fullRepresentation: PlasmaExtras.Representation {
-        Item {
-            id: mainViewWrapper
+        property var mainModel: todoListModel
+        property var currentModel: mainModel
 
+        property bool subModel: !(mainModel == currentModel)
+        property var subModelTitle
+
+        Layout.minimumHeight: root.switchHeight
+        Layout.minimumWidth: root.switchWidth
+        Layout.preferredHeight: Kirigami.Units.gridUnit * 20
+        Layout.preferredWidth: Kirigami.Units.gridUnit * 20
+
+        contentItem: PlasmaComponents.ScrollView {
             Layout.minimumHeight: 200
             Layout.minimumWidth: 200
-            // transparent background
             Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
             anchors.fill: parent
             clip: true
             height: 400
             width: 300
 
-            TodoList {
-                id: mainTodoList
+            contentItem: Item {
+                id: scrollContent
 
-                anchors.top: mainInputItem.bottom
-                height: parent.height
-                model: currentModel
-                thisModel: currentModel
-                width: parent.width
-            }
-            InputItem {
-                id: mainInputItem
+                anchors.fill: parent
 
-                anchors.top: topBarRectangle.bottom
-                anchors.topMargin: 10
-                thisModel: currentModel
-            }
-            Rectangle {
-                id: topBarRectangle
+                Rectangle {
+                    id: topBarRectangle
 
-                anchors.top: parent.top
-                //anchors.left: backButton.right
-                //anchors.leftMargin: 15
-                //anchors.verticalCenter: parent.verticalCenter
-                // anchors.horizontalCenter: parent.horizontalCenter
-                color: config_background_color
-                height: subModel ? Math.max(title.contentHeight + 10, 40) : 0
-                opacity: (1 - config_transparency / 100)
-                radius: 10
-                visible: subModel
-                width: parent.width
-            }
-            Text {
-                id: title
+                    anchors.top: parent.top
+                    color: config_background_color
+                    height: subModel ? Math.max(title.contentHeight + 10, 40) : 0
+                    opacity: (1 - config_transparency / 100)
+                    radius: 10
+                    visible: subModel
+                    width: parent.width
+                }
+                Text {
+                    id: title
 
-                anchors.horizontalCenter: topBarRectangle.horizontalCenter
-                //anchors.left: backButton.right
-                //anchors.leftMargin: 15
-                anchors.verticalCenter: topBarRectangle.verticalCenter
-                color: config_text_color
-                font: config_text_font
-                horizontalAlignment: Text.AlignHCenter
-                text: root.subModelTitle
-                verticalAlignment: Text.AlignVCenter
-                visible: subModel
-                width: parent.width * 0.75
-                wrapMode: Text.Wrap
-            }
-            Button {
-                id: backButton
+                    anchors.horizontalCenter: topBarRectangle.horizontalCenter
+                    anchors.verticalCenter: topBarRectangle.verticalCenter
+                    color: config_text_color
+                    font: config_text_font
+                    horizontalAlignment: Text.AlignHCenter
+                    text: root.subModelTitle
+                    verticalAlignment: Text.AlignVCenter
+                    visible: subModel
+                    width: parent.width * 0.75
+                    wrapMode: Text.Wrap
+                }
+                Button {
+                    id: backButton
 
-                anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.verticalCenter: topBarRectangle.verticalCenter
-                visible: subModel
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.verticalCenter: topBarRectangle.verticalCenter
+                    visible: subModel
 
-                background: Kirigami.Icon {
-                    id: backIcon
+                    background: Kirigami.Icon {
+                        id: backIcon
 
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
-                    color: "blue"
-                    height: width
-                    source: "draw-arrow-back"
-                    width: Kirigami.Units.iconSizes.medium
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: "blue"
+                        height: width
+                        source: "draw-arrow-back"
+                        width: Kirigami.Units.iconSizes.medium
 
-                    states: [
-                        State {
-                            when: backButtonHoverHandler.hovered
+                        states: [
+                            State {
+                                when: backButtonHoverHandler.hovered
 
-                            PropertyChanges {
-                                opacity: 0.4
-                                target: backIcon
+                                PropertyChanges {
+                                    opacity: 0.4
+                                    target: backIcon
+                                }
                             }
+                        ]
+
+                        HoverHandler {
+                            id: backButtonHoverHandler
+
+                            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+                            cursorShape: Qt.PointingHandCursor
                         }
-                    ]
+                    }
 
-                    HoverHandler {
-                        id: backButtonHoverHandler
+                    onClicked: {
+                        var parentModel = mainTodoList.parentModelList[(mainTodoList.parentModelList.length - 1)];
+                        var parentModelTitle = mainTodoList.parentModelTitleList[(mainTodoList.parentModelTitleList.length - 2)];
 
-                        acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-                        cursorShape: Qt.PointingHandCursor
+                        root.currentModel = parentModel;
+                        root.subModelTitle = parentModelTitle;
+                        mainTodoList.parentModelList.pop();
+                        mainTodoList.parentModelTitleList.pop();
                     }
                 }
+                InputItem {
+                    id: mainInputItem
 
-                onClicked: {
-                    var parentModel = mainTodoList.parentModelList[(mainTodoList.parentModelList.length - 1)];
-                    var parentModelTitle = mainTodoList.parentModelTitleList[(mainTodoList.parentModelTitleList.length - 2)];
+                    anchors.top: topBarRectangle.bottom
+                    anchors.topMargin: 10
+                    thisModel: currentModel
+                }
+                TodoList {
+                    id: mainTodoList
 
-                    root.currentModel = parentModel;
-                    root.subModelTitle = parentModelTitle;
-                    mainTodoList.parentModelList.pop();
-                    mainTodoList.parentModelTitleList.pop();
+                    anchors.top: mainInputItem.bottom
+                    height: parent.height
+                    model: currentModel
+                    thisModel: currentModel
+                    width: parent.width
+                }
+                ListModel {
+                    id: todoListModel
+
+                    Component.onCompleted: {
+                        loadModelFromJson("todoListModel", todoListModel);
+                    }
                 }
             }
-            ListModel {
-                id: todoListModel
-
-                Component.onCompleted: {
-                    loadModelFromJson("todoListModel", todoListModel);
-                }
-            }
-        }
-    }
-}
+         }
+     }
+ }
