@@ -15,8 +15,7 @@ PlasmoidItem {
     property var mainModel: todoListModel
     property bool subModel: !(mainModel == currentModel)
     property var subModelTitle
-    readonly property int transparency: Plasmoid.configuration.transparency
-
+    readonly property int config_transparency: Plasmoid.configuration.transparency
     function loadModelFromJson(fileName, listModel) {
         let file = LocalStorage.openDatabaseSync("qtodo", "1.0", "StorageDatabase", 5000000);
         let jsonString = "";

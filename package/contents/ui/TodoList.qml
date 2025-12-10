@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import org.kde.kirigami as Kirigami
-
+//import org.kde.plasma.plasmoid
 ListView {
     id: todoList
 
@@ -9,7 +9,7 @@ ListView {
     property var parentModelList: []
     property var parentModelTitleList: []
     property var thisModel
-
+    //readonly property int transparency: Plasmoid.configuration.transparency
     function getCheckedItemCount(model) {
         var count = 0;
         for (var i = 0; i < model.count; i++) {
@@ -74,7 +74,7 @@ ListView {
         Rectangle {
             anchors.fill: parent
             color: "black"
-            opacity: 0.3
+            opacity: (1-config_transparency/100)
             radius: 10
         }
         Item {
