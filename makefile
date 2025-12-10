@@ -8,7 +8,7 @@ METADATA := $(PKG_DIR)/metadata.json
 INSTALL_BASE := $(HOME)/.local/share/plasma/plasmoids
 PLASMOIDVIEWER := plasmoidviewer
 RSYNC := rsync -a --delete
-NAME := ff.qtodo.widget
+NAME := cmachsocket.qtodo.widget
 
 # 尝试使用 python3 再回退到 python 以解析 metadata.json 中的 id 字段
 # 备用更稳健（不依赖 make 解析时立即计算）的方式（在 recipe 中使用）：
