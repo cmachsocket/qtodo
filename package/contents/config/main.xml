@@ -10,7 +10,10 @@
             <label>set transparency</label>
             <default>0</default>
         </entry>
-
+        <entry name="text_font" type="string">
+            <label>config lyrics' font family.</label>
+            <default></default>
+        </entry>
         <entry name="text_color" type="string">
             <label>config text color.</label>
             <default>white</default>

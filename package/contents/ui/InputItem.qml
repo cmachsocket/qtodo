@@ -1,42 +1,46 @@
 import QtQuick
 import QtQuick.Controls
 import org.kde.plasma.plasmoid
-Item {    
-    id: inputItem                                                                                                                                                                                                                               
-    width: root.width * 0.8                                                                                         
-    height: inputTextArea.contentHeight + 8                                                                                                                                                                                                                                                                                                                    
-    anchors.horizontalCenter: parent.horizontalCenter 
+
+Item {
+    id: inputItem
+
+    readonly property string config_text_font: Plasmoid.configuration.text_font
     readonly property string config_background_color: Plasmoid.configuration.background_color
     readonly property string config_text_color: Plasmoid.configuration.text_color
-    readonly property int transparency: Plasmoid.configuration.transparency
     property var thisModel
+    readonly property int transparency: Plasmoid.configuration.transparency
 
-    TextArea {                                                                                                                      
-        id: inputTextArea                                                                                                               
-        anchors.fill: parent                                                                                                        
-        font.pixelSize: 18                                                                                                   
-        color: "white" 
-        horizontalAlignment: TextArea.AlignHCenter                                                                                  
-        verticalAlignment: TextArea.AlignVCenter                                                                                    
-        wrapMode: TextArea.Wrap 
-        
+    anchors.horizontalCenter: parent.horizontalCenter
+    height: inputTextArea.contentHeight + 8
+    width: root.width * 0.9
+
+    TextArea {
+        id: inputTextArea
+
+        anchors.fill: parent
+        color: config_text_color
+        horizontalAlignment: TextArea.AlignHCenter
+        verticalAlignment: TextArea.AlignVCenter
+        wrapMode: TextArea.Wrap
+        font: config_text_font
         background: Rectangle {
-            anchors.fill: parent   
-            height: parent.height + 30                                           
-            radius: 10                                                           
-            opacity: 0.2                                                         
-            color: "blue"                                                        
-        }                                                                                                                                                                                                                                                                                                                            
+            anchors.fill: parent
+            color: config_background_color
+            height: parent.height + 30
+            opacity: 0.2
+            radius: 10
+        }
 
-        Keys.onReturnPressed: {  
-            var input = {}
-            input.text = inputTextArea.text
-            input.color = "white"
-            input.checked = false
-            input.sublist = []
-            thisModel.insert(0, input)  
-            saveModelToJson("todoListModel", todoListModel)
-            inputTextArea.text = ""                                                                                                                                                                         
-        }                                                                                                                                                                                                                                                                                                               
-    } 
-} 
+        Keys.onReturnPressed: {
+            var input = {};
+            input.text = inputTextArea.text;
+            input.color = config_text_color;
+            input.checked = false;
+            input.sublist = [];
+            thisModel.insert(0, input);
+            saveModelToJson("todoListModel", todoListModel);
+            inputTextArea.text = "";
+        }
+    }
+}
