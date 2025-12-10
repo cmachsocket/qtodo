@@ -3,7 +3,6 @@
 # 并能使用 plasmoidviewer 运行
 
 PKG_DIR := package
-RUNTIME_DIR := /home/cmach_socket/projects/qtodo/package
 METADATA := $(PKG_DIR)/metadata.json
 INSTALL_BASE := $(HOME)/.local/share/plasma/plasmoids
 PLASMOIDVIEWER := plasmoidviewer
@@ -32,7 +31,7 @@ install:
 	@# 确保安装基目录存在
 	@mkdir -p "$(INSTALL_BASE)"
 	@# 使用 rsync 同步并删除多余文件，保持目标与 package/ 一致
-	@echo "Installing plasmoid '$(ID)' to '$(INSTALL_DIR)'"
+	@echo "Installing plasmoid '$(PKG_DIR)' to '$(INSTALL_DIR)'"
 	@$(RSYNC) "$(PKG_DIR)/" "$(INSTALL_DIR)/"
 	@echo "Installed."
 
@@ -42,9 +41,6 @@ run:
 
 clean:
 	@# 安全检查，避免误删根路径或不相关目录
-	@if [ -z "$(ID)" ]; then \
-		echo "Error: could not determine plasmoid id from $(METADATA)"; exit 1; \
-	fi
 	@case "$(INSTALL_DIR)" in "$(INSTALL_BASE)"/*) \
 		echo "Removing '$(INSTALL_DIR)'"; rm -rf "$(INSTALL_DIR)"; \
 		echo "Removed."; \
