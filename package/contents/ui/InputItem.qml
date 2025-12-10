@@ -28,7 +28,7 @@ Item {
             anchors.fill: parent
             color: config_background_color
             height: parent.height + 30
-            opacity: 0.2
+            opacity: (1 - config_transparency / 100)
             radius: 10
         }
 

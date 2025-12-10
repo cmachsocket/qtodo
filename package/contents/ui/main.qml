@@ -90,9 +90,9 @@ PlasmoidItem {
             //anchors.leftMargin: 15
             //anchors.verticalCenter: parent.verticalCenter
            // anchors.horizontalCenter: parent.horizontalCenter
-            color: cfg_background_color
+            color: config_background_color
             height: subModel ? Math.max(title.contentHeight + 10, 40) : 0
-            opacity: 0.6
+            opacity: (1- config_transparency / 100)
             radius: 10
             visible: subModel
             width: parent.width
