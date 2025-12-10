@@ -10,9 +10,6 @@ forked from [fightingff](https://github.com/fightingff/qtodo)
 - Adjustable background color and transparency
 - Available on both panel and desktop
 - Give you a smile when you complete all tasks! ＼(≧▽≦)／
-## Images:
-
-![screenshot1](image/README/1.png)
 
 ## Installation:
 
@@ -22,3 +19,9 @@ cd qtodo
 make install # use 'make clean' to uninstall
 ```
 or you can copy the folder to `~/.local/share/plasma/plasmoids/` manually.
+
+
+## Images:
+
+![screenshot1](image/README/1.png)
+
