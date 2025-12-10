@@ -7,7 +7,7 @@ Item {
 
     anchors.horizontalCenter: parent.horizontalCenter
     height: inputTextArea.contentHeight + 8
-    width: root.width * 0.9
+    width: fullRep.width * 0.9
 
     TextArea {
         id: inputTextArea
@@ -16,7 +16,7 @@ Item {
         color: config_text_color
         horizontalAlignment: TextArea.AlignHCenter
         verticalAlignment: TextArea.AlignVCenter
-        wrapMode: TextArea.Wrap
+        wrapMode: TextArea.Wrap+
         font: config_text_font
         background: Rectangle {
             anchors.fill: parent

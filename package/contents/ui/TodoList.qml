@@ -9,6 +9,7 @@ ListView {
     property var parentModelList: []
     property var parentModelTitleList: []
     property var thisModel
+
     //readonly property int transparency: Plasmoid.configuration.transparency
     function getCheckedItemCount(model) {
         var count = 0;
@@ -137,9 +138,9 @@ ListView {
 
                         onClicked: {
                             root.subModelTitle = model.text;
-                            todoList.parentModelList.push(root.currentModel);
+                            todoList.parentModelList.push(fullRep.currentModel);
                             todoList.parentModelTitleList.push(model.text);
-                            root.currentModel = thisModel.get(index).sublist;
+                            fullRep.currentModel = thisModel.get(index).sublist;
                         }
                     }
                     Button {

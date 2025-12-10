@@ -15,6 +15,7 @@ PlasmoidItem {
     readonly property string config_text_color: Plasmoid.configuration.text_color
     readonly property string config_text_font: Plasmoid.configuration.text_font
     readonly property int config_transparency: Plasmoid.configuration.transparency
+    property var subModelTitle
 
     function loadModelFromJson(fileName, listModel) {
         let file = LocalStorage.openDatabaseSync("qtodo", "1.0", "StorageDatabase", 5000000);
@@ -72,11 +73,11 @@ PlasmoidItem {
         }
     }
     fullRepresentation: PlasmaExtras.Representation {
-        property var mainModel: todoListModel
-        property var currentModel: mainModel
+        id: fullRep
 
+        property var currentModel: mainModel
+        property var mainModel: todoListModel
         property bool subModel: !(mainModel == currentModel)
-        property var subModelTitle
 
         Layout.minimumHeight: root.switchHeight
         Layout.minimumWidth: root.switchWidth
@@ -163,7 +164,7 @@ PlasmoidItem {
                         var parentModel = mainTodoList.parentModelList[(mainTodoList.parentModelList.length - 1)];
                         var parentModelTitle = mainTodoList.parentModelTitleList[(mainTodoList.parentModelTitleList.length - 2)];
 
-                        root.currentModel = parentModel;
+                        fullRep.currentModel = parentModel;
                         root.subModelTitle = parentModelTitle;
                         mainTodoList.parentModelList.pop();
                         mainTodoList.parentModelTitleList.pop();
@@ -193,6 +194,6 @@ PlasmoidItem {
                     }
                 }
             }
-         }
-     }
- }
+        }
+    }
+}
