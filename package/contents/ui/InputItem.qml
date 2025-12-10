@@ -1,12 +1,14 @@
 import QtQuick
 import QtQuick.Controls
-
+import org.kde.plasma.plasmoid
 Item {    
     id: inputItem                                                                                                                                                                                                                               
     width: root.width * 0.8                                                                                         
     height: inputTextArea.contentHeight + 8                                                                                                                                                                                                                                                                                                                    
     anchors.horizontalCenter: parent.horizontalCenter 
-
+    readonly property string config_background_color: Plasmoid.configuration.background_color
+    readonly property string config_text_color: Plasmoid.configuration.text_color
+    readonly property int transparency: Plasmoid.configuration.transparency
     property var thisModel
 
     TextArea {                                                                                                                      

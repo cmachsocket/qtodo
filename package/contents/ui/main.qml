@@ -14,7 +14,9 @@ PlasmoidItem {
     Layout.minimumHeight: 200
     // transparent background
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
-
+    readonly property string config_background_color: Plasmoid.configuration.background_color
+    readonly property string config_text_color: Plasmoid.configuration.text_color
+    readonly property int transparency: Plasmoid.configuration.transparency
     property var mainModel: todoListModel
     property var currentModel: mainModel
     property bool subModel: !(mainModel == currentModel)

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+    <kcfgfile name=""/>
+
+    <group name="Appearance">
+        <entry name="transparency" type="int">
+            <label>set transparency</label>
+            <default>0</default>
+        </entry>
+
+        <entry name="text_color" type="string">
+            <label>config text color.</label>
+            <default>white</default>
+        </entry>
+        <entry name="background_color" type="string">
+            <label>config background color</label>
+            <default>black</default>
+        </entry>
+
+    </group>
+
+</kcfg>
