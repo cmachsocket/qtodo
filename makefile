@@ -14,7 +14,7 @@ NAME := cmachsocket.qtodo.widget
 # ID := $(shell python3 -c 'import json,sys;print(json.load(open("package/metadata.json")).get("id",""))' 2>/dev/null || python -c 'import json,sys;print(json.load(open("package/metadata.json")).get("id",""))' 2>/dev/null)
 
 INSTALL_DIR := $(INSTALL_BASE)/$(NAME)
-
+RUNTIME_DIR := $(shell pwd)/$(PKG_DIR)
 .PHONY: help install run clean
 
 help:
