@@ -76,9 +76,9 @@ PlasmoidItem {
 
         Accessible.name: Plasmoid.title
         Accessible.role: Accessible.Button
-        Layout.minimumHeight: 36
+        //Layout.minimumHeight: 36
         Layout.minimumWidth: 80
-        height: 36
+        //height: 36
         width: 80
 
         onClicked: root.expanded = !wasExpanded
